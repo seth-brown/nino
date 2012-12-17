@@ -10,7 +10,7 @@ import textwrap
 import requests
 
 def weather(dat, day_idx):
-    """
+    """Assemble weather data
     """
     data = dat['forecast']['txt_forecast']['forecastday'][day_idx]
     day = data['title']
@@ -23,6 +23,8 @@ def weather(dat, day_idx):
 
 
 def cli_format(d):
+    """Format weather data
+    """
     forecast = '\n'.join(textwrap.wrap(d[1], 60))
     temp = '{loc}\n{delim}\n\nHigh {high}{deg}, Low {low}{deg}\n\n{forecast}\n'
     out = temp.format(loc=d[0], 
@@ -35,6 +37,8 @@ def cli_format(d):
 
 
 def main():
+    """Output weather data
+    """
     wunder_data = {'base_url': 'http://api.wunderground.com/api/',
                    'key': sys.argv[1],
                    'query': '/conditions/forecast/q/',
@@ -47,7 +51,7 @@ def main():
     for time in times:
         weather_data = weather(r, time)
         cli_output = cli_format(weather_data)
-        print cli_output.center(10, 'a')
+        print cli_output
 
 if __name__ == '__main__':
     main()
