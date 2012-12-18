@@ -6,15 +6,13 @@ niño is a simple command line interface for the Wunderground API written in Pyt
 Dependencies:
 --------------------------
 
-* Python 2.4+
+* Python 2.5+
 * Wunderground API key
 
 Installation:
 --------------------------
 
-1. Install requests:  
-`pip install requests`
-2. [Get a wunderground API key][2]
+1. [Get a wunderground API key][2]
 
 Usage:
 --------------------------
