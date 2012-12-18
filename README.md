@@ -7,8 +7,7 @@ Dependencies:
 --------------------------
 
 * Python 2.4+
-* [Requests][1]
-* Wunderground API
+* Wunderground API key
 
 Installation:
 --------------------------
@@ -28,5 +27,4 @@ Usage:
 
 
 
-[1]: http://docs.python-requests.org/en/v1.0.0/
 [2]: http://www.wunderground.com/weather/api/

@@ -7,7 +7,8 @@ Description: Weather forecast
 """
 import sys
 import textwrap
-import requests
+import json
+import urllib2
 
 def weather(dat, day_idx):
     """Assemble weather data
@@ -44,7 +45,7 @@ def main():
                    'query': '/conditions/forecast/q/',
                    'zip': sys.argv[2]}
     url = '{base_url}{key}{query}{zip}.json'.format(**wunder_data)
-    r = requests.get(url).json()
+    r = json.load(urllib2.urlopen(url))
     location = r['current_observation']['display_location']['full']
     print '\n{0}\n'.format(location)
     times = (0, 1, 2)
