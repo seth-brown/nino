@@ -10,20 +10,20 @@ import textwrap
 import json
 import urllib2
 
-def weather(dat, day_idx):
+def weather(dat, day_idx, metric=False):
     """Assemble weather data
     """
     data = dat['forecast']['txt_forecast']['forecastday'][day_idx]
     day = data['title']
-    forecast = data['fcttext']
+    forecast = data['fcttext_metric'] if metric else data['fcttext']
     temps = dat['forecast']['simpleforecast']['forecastday'][day_idx]
-    high = temps['high']['fahrenheit']
-    low = temps['low']['fahrenheit']
+    high = temps['high']['celsius'] if metric else temps['high']['fahrenheit']
+    low = temps['low']['celsius'] if metric else temps['low']['fahrenheit']
 
     return day, forecast, high, low
 
 
-def cli_format(d):
+def cli_format(d, metric=False):
     """Format weather data
     """
     forecast = '\n'.join(textwrap.wrap(d[1], 60))
@@ -33,7 +33,7 @@ def cli_format(d):
                       high=d[2], 
                       low=d[3], 
                       delim=60*'=',
-                      deg='°F')
+                      deg='°C' if metric else '°F')
     return out
 
 
@@ -44,14 +44,18 @@ def main():
                    'key': sys.argv[1],
                    'query': '/conditions/forecast/q/',
                    'zip': sys.argv[2]}
+    try:
+        metric = True if sys.argv[3] == '-c' else False
+    except IndexError:
+        metric = False
     url = '{base_url}{key}{query}{zip}.json'.format(**wunder_data)
     r = json.load(urllib2.urlopen(url))
     location = r['current_observation']['display_location']['full']
     print '\n{0}\n'.format(location)
     times = (0, 1, 2)
     for time in times:
-        weather_data = weather(r, time)
-        cli_output = cli_format(weather_data)
+        weather_data = weather(r, time, metric)
+        cli_output = cli_format(weather_data, metric)
         print cli_output
 
 if __name__ == '__main__':
